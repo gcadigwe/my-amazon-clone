@@ -2,10 +2,12 @@ import React from "react";
 import "./Header.css";
 import SearchIcon from "@material-ui/icons/Search";
 import { useHistory, Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
 
 function Header() {
   const history = useHistory();
+  const { basket } = useSelector((state) => ({ ...state }));
   return (
     <div className="header">
       <img
@@ -42,7 +44,9 @@ function Header() {
         <Link to="/checkout">
           <div className="header__optionBasket">
             <ShoppingBasketIcon className="header__shoppingBasket" />
-            <span className="header__optionLineTwo header__basketCount">0</span>
+            <span className="header__optionLineTwo header__basketCount">
+              {basket && basket.basket.length}
+            </span>
           </div>
         </Link>
       </div>
