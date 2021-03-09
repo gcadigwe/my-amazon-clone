@@ -2,10 +2,12 @@ import React from "react";
 import Subtotal from "../Subtotal/Subtotal";
 import "./Checkout.css";
 import { useSelector } from "react-redux";
+import FlipMove from "react-flip-move";
 import CheckoutProduct from "../CheckOutProduct/CheckoutProduct";
 
 function Checkout() {
   const { basket } = useSelector((state) => ({ ...state }));
+  const word = basket.user?.email.split("@");
   return (
     <div className="checkout">
       <div className="checkout__left">
@@ -15,6 +17,7 @@ function Checkout() {
           alt="checout ad"
         />
         <div>
+          <h3>Hello, {basket.user ? word[0] : "Guest"}</h3>
           <h2 className="checkout__title">Your shopping Basket</h2>
           {basket?.basket.map((item, i) => (
             <CheckoutProduct

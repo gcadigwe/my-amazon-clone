@@ -10,6 +10,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_BASKET:
       console.log("Payload ==> ", action.payload);
       return {
+        ...state,
         basket: [...state.basket, action.payload],
       };
 

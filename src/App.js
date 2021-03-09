@@ -7,6 +7,7 @@ import Checkout from "./components/Checkout/Checkout";
 import Login from "./components/Login/Login";
 import { auth } from "./firebase/firebase";
 import { useDispatch } from "react-redux";
+import Payment from "./components/Payment/Payment";
 
 function App() {
   const dispatch = useDispatch();
@@ -38,6 +39,10 @@ function App() {
         <Route path="/" exact>
           <Header />
           <Home />
+        </Route>
+        <Route path="/payment" exact>
+          <Header />
+          <Payment />
         </Route>
         <Route path="/checkout" exact>
           <Header />

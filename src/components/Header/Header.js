@@ -10,6 +10,8 @@ function Header() {
   const history = useHistory();
   const { basket } = useSelector((state) => ({ ...state }));
 
+  const word = basket.user?.email.split("@");
+
   const handleAuth = () => {
     if (basket.user) {
       auth.signOut();
@@ -33,7 +35,9 @@ function Header() {
       <div className="header__nav">
         <Link to={!basket.user && "/login"} onClick={handleAuth}>
           <div className="header__option">
-            <span className="header__optionLineOne">Hello</span>
+            <span className="header__optionLineOne">
+              Hello {basket.user ? word[0] : "Guest"}
+            </span>
 
             <span className="header__optionLineTwo">
               {basket.user ? "Sign Out" : "Sign In"}
