@@ -4,10 +4,18 @@ import SearchIcon from "@material-ui/icons/Search";
 import { useHistory, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
+import { auth } from "../../firebase/firebase";
 
 function Header() {
   const history = useHistory();
   const { basket } = useSelector((state) => ({ ...state }));
+
+  const handleAuth = () => {
+    if (basket.user) {
+      auth.signOut();
+    }
+  };
+
   return (
     <div className="header">
       <img
@@ -23,11 +31,13 @@ function Header() {
       </div>
 
       <div className="header__nav">
-        <Link to="/login">
+        <Link to={!basket.user && "/login"} onClick={handleAuth}>
           <div className="header__option">
             <span className="header__optionLineOne">Hello</span>
 
-            <span className="header__optionLineTwo">Sign in</span>
+            <span className="header__optionLineTwo">
+              {basket.user ? "Sign Out" : "Sign In"}
+            </span>
           </div>
         </Link>
 
