@@ -8,6 +8,12 @@ import Login from "./components/Login/Login";
 import { auth } from "./firebase/firebase";
 import { useDispatch } from "react-redux";
 import Payment from "./components/Payment/Payment";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+
+const promise = loadStripe(
+  "pk_test_51IJPUfGh77TElrnXN0JouKNMW818Og9vrHmdsz3v8fYmvikWF0KAGY5n0NaK1kUuhHWtaRJu7QoIqS50hITy0f2a001wlJ0oJD"
+);
 
 function App() {
   const dispatch = useDispatch();
@@ -42,7 +48,9 @@ function App() {
         </Route>
         <Route path="/payment" exact>
           <Header />
-          <Payment />
+          <Elements stripe={promise}>
+            <Payment />
+          </Elements>
         </Route>
         <Route path="/checkout" exact>
           <Header />
