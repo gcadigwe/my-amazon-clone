@@ -2,7 +2,7 @@ import React from "react";
 import "./CheckoutProduct.css";
 import { useDispatch } from "react-redux";
 
-function CheckoutProduct({ image, title, price, rating, id }) {
+function CheckoutProduct({ image, title, price, rating, id, hideButton }) {
   const dispatch = useDispatch();
   const removeFromBasket = () => {
     dispatch({
@@ -26,7 +26,9 @@ function CheckoutProduct({ image, title, price, rating, id }) {
               <p key={i}>⭐</p>
             ))}
         </div>
-        <button onClick={removeFromBasket}>Remove from Basket</button>
+        {!hideButton && (
+          <button onClick={removeFromBasket}>Remove from Basket</button>
+        )}
       </div>
     </div>
   );
