@@ -7,6 +7,8 @@ import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { getBasketTotal } from "../functions/cart";
 import CurrencyFormat from "react-currency-format";
 import axios from "../../axios/axios";
+import { useDispatch } from "react-redux";
+import { db } from "../../firebase/firebase";
 
 function Payment() {
   const { basket } = useSelector((state) => ({ ...state }));
@@ -17,6 +19,8 @@ function Payment() {
   const [succeeded, setSucceeded] = useState(false);
   const [clientSecret, setClientSecret] = useState("");
   const history = useHistory();
+
+  const dispatch = useDispatch();
 
   const stripe = useStripe();
   const elements = useElements();
@@ -47,9 +51,29 @@ function Payment() {
         },
       })
       .then(({ paymentIntent }) => {
+        console.log("BASKET.BASKET ===>", basket.basket);
+        console.log("paymentamount ====>", paymentIntent.amount);
+        db.collection("users")
+          .doc(basket?.user.uid)
+          .collection("orders")
+          .doc(paymentIntent.id)
+          .set({
+            basket: basket.basket,
+            amount: paymentIntent.amount,
+            created: paymentIntent.created,
+          })
+          .then(() => {
+            console.log("Document successfully written");
+          })
+          .catch((error) => {
+            console.log("Error writing document >>>", error);
+          });
         setSucceeded(true);
         setError(null);
         setProcessing(false);
+        dispatch({
+          type: "EMPTY_BASKET",
+        });
         history.replace("/orders");
       });
   };

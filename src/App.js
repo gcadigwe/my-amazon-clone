@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import Payment from "./components/Payment/Payment";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
+import Orders from "./components/Orders/Orders";
 
 const promise = loadStripe(
   "pk_test_51IJPUfGh77TElrnXN0JouKNMW818Og9vrHmdsz3v8fYmvikWF0KAGY5n0NaK1kUuhHWtaRJu7QoIqS50hITy0f2a001wlJ0oJD"
@@ -55,6 +56,10 @@ function App() {
         <Route path="/checkout" exact>
           <Header />
           <Checkout />
+        </Route>
+        <Route path="/orders" exact>
+          <Header />
+          <Orders />
         </Route>
         <Route path="/login" exact component={Login} />
       </Switch>
