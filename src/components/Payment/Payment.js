@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./Payment.css";
 import { useSelector } from "react-redux";
 import CheckoutProduct from "../CheckOutProduct/CheckoutProduct";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { getBasketTotal } from "../functions/cart";
 import CurrencyFormat from "react-currency-format";
@@ -16,6 +16,7 @@ function Payment() {
   const [processing, setProcessing] = useState(false);
   const [succeeded, setSucceeded] = useState(false);
   const [clientSecret, setClientSecret] = useState("");
+  const history = useHistory();
 
   const stripe = useStripe();
   const elements = useElements();
@@ -37,11 +38,18 @@ function Payment() {
     e.preventDefault();
     setProcessing(true);
 
-    const payload = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: {
-        card: elements.getElement(CardElement),
-      },
-    });
+    const payload = await stripe
+      .confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: elements.getElement(CardElement),
+        },
+      })
+      .then(({ paymentIntent }) => {
+        setSucceeded(true);
+        setError(null);
+        setProcessing(false);
+        history.replace("/orders");
+      });
   };
 
   const handleChange = (e) => {
